@@ -1,0 +1,26 @@
+﻿
+
+drawRadar方法优化！！！去掉found变量
+
+window.cfg设计
+
+组件化：aggrid，setting，errorpage，container（单页面应用）
+
+message pack
+
+http2.0
+
+利用组件实现mvvm（loading）
+
+自定义session
+
+行内编辑时，显示状态
+
+
+考虑利用aggregation提升下性能
+
+使用异步的alert，prompt，confirm组件（阻塞线程）
+
+
+与ejs解耦
+log表统一到一个数据库？

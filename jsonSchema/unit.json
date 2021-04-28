@@ -1,0 +1,46 @@
+{
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "_id",
+        "_human",
+        "_skill"
+    ],
+    "properties": {
+        "_id": {},
+        "_human": {
+            "type": "string"
+        },
+        "_skill": {
+            "type": "string"
+        },
+        "aim": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "score": {
+            "type": [
+                "number",
+                "null"
+            ]
+        },
+        "act": {
+            "type": "string",
+            "maxLength": 1000
+        },
+        "status": {
+            "type": "string",
+            "maxLength": 100
+        },
+        "detail": {
+            "type": "string",
+            "maxLength": 1000
+        },
+        "extra": {
+            "type": "string",
+            "maxLength": 1000
+        }
+    }
+}

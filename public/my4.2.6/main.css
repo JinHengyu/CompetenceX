@@ -1,0 +1,38 @@
+/* :root选择器用匹配文档的根元素。
+在HTML中根元素始终是HTML元素。 */
+:root {
+  /* set the theme color */
+  --mdc-theme-primary: teal;
+  --mdc-theme-secondary: purple;
+  --mdc-theme-background: #fff;
+
+  font-size: 14px;
+}
+
+#progress {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 5;
+}
+
+#grid {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+#radar section {
+  width: 640px;
+}
+
+#radar canvas {
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+/* drawer中的add object菜单偏移一点到右边 */
+.mdc-menu-surface {
+  margin-left: 100px !important;
+}

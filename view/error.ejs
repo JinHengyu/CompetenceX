@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>ERROR!!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        blockquote {
+            color: black;
+            background-color: #eee;
+            font-size: xx-large;
+            width: 512px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>
+        Oops u got an Error:
+    </h2>
+    <blockquote>
+        <%- msg %>
+    </blockquote>
+    <h2>
+        Few ways to find the solution:
+    </h2>
+    <ul>
+        <li>Return to original <a href="<%- `${cfg.app.protocol}://${cfg.server.domain||cfg.server.ip}:${cfg.app.port}` %>">site</a>.</li>
+        <li>Contact the <a href="mailto:<%- cfg.app.admin %>">Administrator</a>.</li>
+        <li>Read the <a href="<%- cfg.my.wiki %>">Wiki</a>.</li>
+    </ul>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+{
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "_id",
+        "_role",
+        "_lv"
+    ],
+    "properties": {
+        "_id": {
+            "pattern": "^[^_A-Z][^A-Z]*$",
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 2
+        },
+        "_role": {
+            "type": "string",
+            "pattern": "^[^_][^.$]*$",
+            "maxLength": 50,
+            "minLength": 2
+        },
+        "_lv": {
+            "type": "string",
+            "enum": [
+                "human",
+                "locked",
+                "hyper",
+                "root"
+            ]
+        },
+        "_roleList": {
+            "type": "array",
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "maxLength": 100,
+                "pattern": "^[^_][^.$]*$"
+            }
+        },
+        "_typeList": {
+            "type": "array",
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "maxLength": 100,
+                "pattern": "^[^_].*$"
+            }
+        },
+        "_pwd": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "maxLength": 100
+        },
+        "_info": {
+            "type": "string",
+            "maxLength": 1000
+        },
+        "_owner": {
+            "type": [
+                "null",
+                "string"
+            ],
+            "maxLength": 50
+        },
+        "_capacity": {
+            "type": "number",
+            "description": "暂时不写入minimum和maximum，因为mongodb validation还没有详细的错误信息"
+        }
+    }
+}

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/png" href="<%- cfg.my.favicon %>">
+
+    <title>Setting</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel='stylesheet' href='/get/public/mdc/material-components-web.min.css'>
+    <link rel='stylesheet' href='/get/public/mdc/icon.css'>
+
+    <style>
+        :root {
+            --mdc-theme-primary: brown;
+            --mdc-theme-secondary: purple;
+            --mdc-theme-background: #fff;
+            font-size: 14px;
+        }
+
+        body {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: 16px 18px;
+        }
+
+        #progress {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 5;
+        }
+    </style>
+</head>
+
+<body class="mdc-elevation--z24">
+    <div class="mdc-tab-bar" role="tablist" data-mdc-auto-init="MDCTabBar">
+        <div class="mdc-tab-scroller">
+            <div class="mdc-tab-scroller__scroll-area">
+                <div class="mdc-tab-scroller__scroll-content">
+                    <!--  -->
+                    <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true" tabindex="0"
+                        onclick="setRoles()">
+                        <span class="mdc-tab__content">
+                            <span class="mdc-tab__icon material-icons" aria-hidden="true">list</span>
+                            <span class="mdc-tab__text-label">Roles & People</span>
+                        </span>
+                        <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                            <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                        </span>
+                        <span class="mdc-tab__ripple"></span>
+                    </button>
+                    <!--  -->
+                    <button class="mdc-tab" role="tab" tabindex="1" onclick="setTypes()">
+                        <span class="mdc-tab__content">
+                            <span class="mdc-tab__icon material-icons" aria-hidden="true">list</span>
+                            <span class="mdc-tab__text-label">Types & Skills</span>
+                        </span>
+                        <span class="mdc-tab-indicator ">
+                            <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                        </span>
+                        <span class="mdc-tab__ripple"></span>
+                    </button>
+                    <!--  -->
+                    <button class="mdc-tab" role="tab" tabindex="2" onclick="copyAccount()">
+                        <span class="mdc-tab__content">
+                            <span class="mdc-tab__icon material-icons" aria-hidden="true">search</span>
+                            <span class="mdc-tab__text-label">Template</span>
+                        </span>
+                        <span class="mdc-tab-indicator">
+                            <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                        </span>
+                        <span class="mdc-tab__ripple"></span>
+                    </button>
+                    <!--  -->
+                    <button class="mdc-tab" role="tab" tabindex="2" onclick="reset_pwd()">
+                        <span class="mdc-tab__content">
+                            <span class="mdc-tab__icon material-icons" aria-hidden="true">vpn_key</span>
+                            <span class="mdc-tab__text-label">Reset Pwd</span>
+                        </span>
+                        <span class="mdc-tab-indicator">
+                            <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                        </span>
+                        <span class="mdc-tab__ripple"></span>
+                    </button>
+                    <!--  -->
+                    <button class="mdc-tab" role="tab" tabindex="2"
+                        onclick="if(opener)opener.close();location.href='/'">
+                        <span class="mdc-tab__content">
+                            <span class="mdc-tab__icon material-icons" aria-hidden="true">settings_backup_restore</span>
+                            <span class="mdc-tab__text-label">Return</span>
+                        </span>
+                        <span class="mdc-tab-indicator">
+                            <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                        </span>
+                        <span class="mdc-tab__ripple"></span>
+                    </button>
+                    <!--  -->
+                    <button class="mdc-tab mdc-button--raised" role="tab" tabindex="3" onclick="submit()">
+                        <span class="mdc-tab__content">
+                            <span class="mdc-tab__icon material-icons" aria-hidden="true"
+                                style="color:white;">done</span>
+                            <span class="mdc-tab__text-label" style="color:white;">Submit</span>
+                        </span>
+                        <span class="mdc-tab-indicator ">
+                            <span class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                        </span>
+                        <span class="mdc-tab__ripple"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- progress bar -->
+    <div id="progress" role="progressbar"
+        class="mdc-linear-progress mdc-linear-progress--indeterminate mdc-linear-progress--closed">
+        <div class="mdc-linear-progress__buffering-dots"></div>
+        <div class="mdc-linear-progress__buffer"></div>
+        <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+            <span class="mdc-linear-progress__bar-inner"></span>
+        </div>
+        <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+            <span class="mdc-linear-progress__bar-inner"></span>
+        </div>
+    </div>
+
+
+
+
+
+    <div id="grid" class="ag-theme-balham"></div>
+
+
+
+    <script src='/get/public/mdc/material-components-web.min.js'></script>
+    <script src='<%- cfg.my["ag-grid"] %>'></script>
+    <script src='<%- cfg.my["async.js"] %>'></script>
+    <script src="<%- cfg.my['setting.js'] %>"></script>
+</body>
+
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+
+    <!-- 客户端判断是否登录了 -->
+    <meta name="user" content="<%- req.session.user?'true':'' %>">
+
+    <link rel="shortcut icon" type="image/png" href="<%- cfg.my.favicon %>">
+
+
+    <link rel="stylesheet" href="/get/public/mdc/reset.min.css">
+    <link rel='stylesheet' href='/get/public/mdc/material-components-web.min.css'>
+    <link rel='stylesheet' href='/get/public/mdc/icon.css'>
+    <!-- <link rel='stylesheet' href='/get/public/jsoneditor/jsoneditor.min.css'> -->
+    <!-- come after library -->
+    <link rel='stylesheet' href='<%- cfg.my["main.css"] %>'>
+
+    <title>
+        <%- cfg.app.name %>
+    </title>
+
+    <script>
+        // 不能放在js文件中, 因为IE编译阶段出错后就不会执行任何语句了...
+        if (window.attachEvent || navigator.appName == "Microsoft Internet Explorer" || !+[1,] || !!window
+            .ActiveXObject || "ActiveXObject" in window)
+            window.location.href = '/get/error_page?msg=' +
+                'Internet-Explorer is no longer supported, use a modern browser like Chrome or Firefox instead :)';
+    </script>
+
+</head>
+
+<body class="mdc-typography">
+
+    <!-- Top App Bar -->
+    <header class="mdc-top-app-bar mdc-top-app-bar--dense" data-mdc-auto-init="MDCTopAppBar">
+        <div class="mdc-top-app-bar__row">
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                <button
+                    class="mdc-icon-button material-icons mdc-top-app-bar__navigation-icon mdc-ripple-upgraded--unbounded mdc-ripple-upgraded">
+                    <i class="material-icons">menu</i>
+                </button>
+                <a class="mdc-top-app-bar__title catalog-title mdc-typography--headline5" href="<%- cfg.my.wiki %>"
+                    target="__blank" style="color: inherit;">
+                    <%- cfg.app.name %>
+                </a>
+            </section>
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+                <a class="mdc-typography--headline5" href="/get/setting" target="__blank" style="color: inherit;">
+                    <%- req.session.user ? `${req.session.user._db.slice(1)} / ${req.session.user._id} ` : '' %>
+                </a>
+                <%- req.session.user ? '' : '<span onclick="login()" class="mdc-chip">LOGIN</span>' %>
+            </section>
+        </div>
+    </header>
+
+    <!-- 由top-app-bar toogle -->
+    <div class="app-drawer-layout mdc-top-app-bar--dense-fixed-adjust">
+        <!-- Drawer -->
+        <aside class="mdc-drawer mdc-drawer--modal " data-mdc-auto-init="MDCDrawer">
+            <nav class="mdc-drawer__content mdc-list-group">
+                <div class="mdc-list">
+                    <h6 class="mdc-list-group__subheader">Navigation</h6>
+                    <!--  -->
+                    <a class="mdc-list-item " href="javascript:void(0)" onclick="login()">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">play_arrow</i>Login
+                    </a>
+                    <!--  -->
+                    <a class="mdc-list-item " href="/drop/logout">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">reply</i>Logout
+                    </a>
+                    <!--  -->
+                    <div class="mdc-menu-surface--anchor">
+                        <a class="mdc-list-item " href="javascript:void(0)"
+                            onclick="if(user)dom.MDCMenu.open=!dom.MDCMenu.open;else alert('login first')">
+                            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">add</i>
+                            Add Object
+                        </a>
+                        <div class="mdc-menu mdc-menu-surface" data-mdc-auto-init="MDCMenu">
+                            <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                                <li class="mdc-list-item" role="menuitem" data-obj="human" tabindex="-1">
+                                    <i class="material-icons">arrow_right</i>
+                                    <span class="mdc-list-item__text">Person</span>
+                                </li>
+                                <li class="mdc-list-item" role="menuitem" data-obj="skill" tabindex="-1">
+                                    <i class="material-icons">arrow_right</i>
+                                    <span class="mdc-list-item__text">Skill</span>
+                                </li>
+                                <li class="mdc-list-item" role="menuitem" data-obj="role" tabindex="-1">
+                                    <i class="material-icons">arrow_right</i>
+                                    <span class="mdc-list-item__text">Role</span>
+                                </li>
+                                <li class="mdc-list-item" role="menuitem" data-obj="type" tabindex="-1">
+                                    <i class="material-icons">arrow_right</i>
+                                    <span class="mdc-list-item__text">Skill-Type</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--  -->
+                    <a class="mdc-list-item " href="/get/setting" target="_blank">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
+                        Account Setting
+                    </a>
+                    <!--  -->
+                    <a class="mdc-list-item " href="<%- cfg.my.wiki %>" target="_blank" tabindex="1">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">help</i>
+                        Wiki
+                    </a>
+                    <!--  -->
+                    <a class="mdc-list-item "
+                        href="<%- `mailto:${cfg.app.author};${cfg.app.admin}?subject=Feedback of CompetenceX&body=something...` %>"
+                        target="__blank">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">email</i>Send Feedback
+                    </a>
+                </div>
+
+                <hr class="mdc-list-divider">
+
+                <div class="mdc-list">
+                    <h6 class="mdc-list-group__subheader">Admin</h6>
+                    <!--  -->
+                    <a class="mdc-list-item " href="javascript:void(0)" onclick="log()">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">message</i>Logs
+                    </a>
+                    <!--  -->
+                    <a class="mdc-list-item " href="/get/mongo_backup" target="__blank">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">cloud_download</i>Backup
+                    </a>
+                    <!--  -->
+                    <a class="mdc-list-item " href="javascript:void(0)" onclick="debug_remote()">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">security</i>Debug Remotely
+                    </a>
+                    <!--  -->
+                    <a class="mdc-list-item " href="javascript:void(0)" onclick="debug_local()">
+                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">security</i>Debug Locally
+                    </a>
+                </div>
+
+                <hr class="mdc-list-divider">
+
+                <h6 class="mdc-list-group__subheader">
+                    Version
+                    <%- cfg.app.version %>
+                </h6>
+
+
+            </nav>
+        </aside>
+
+        <!-- 半透明的overlay -->
+        <div class="mdc-drawer-scrim"></div>
+
+
+
+        <!-- Main -->
+        <main class="mdc-drawer-app-content">
+            <div id="grid" style="height: 100%;" class="ag-theme-material"></div>
+        </main>
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+    <!-- 登录对话框 start -->
+    <div id="login" class="mdc-dialog" role="alertdialog" aria-modal="true" data-mdc-auto-init="MDCDialog">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <!-- Title cannot contain leading whitespace due to mdc-typography-baseline-top() -->
+                <h2 class="mdc-dialog__title mdc-typography--headline4">
+                    <i class="material-icons">play_arrow</i>
+                    <span>LOGIN</span>
+                </h2>
+                <div class="mdc-dialog__content">
+                    <br>
+                    <ul style="display: flex;">
+
+
+                        <!-- 事业部 -->
+                        <div class="mdc-select mdc-select--outlined " data-mdc-auto-init="MDCSelect">
+                            <i class="mdc-select__dropdown-icon"></i>
+                            <select class="mdc-select__native-control" id="_db" required autofocus="autofocus">
+                                <!-- placeholder -->
+                                <!-- <option value="" disabled selected></option> -->
+                                <%- cfg.app.DBs.map((dbName,i)=>`
+                                            <option value="${dbName}" ${i===0?'selected':''}>
+                                                ${dbName.slice(1)}
+                                            </option>
+                                        `).join('') %>
+                            </select>
+                            <div class="mdc-notched-outline mdc-notched-outline--upgraded mdc-notched-outline--notched">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label for="_db" class="mdc-floating-label mdc-floating-label--float-above">Work
+                                        Group</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+
+                        <!-- username -->
+                        <div class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                            <input type="text" id="_id" class="mdc-text-field__input" required minlength=2>
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label for="_id" class="mdc-floating-label">USERNAME</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+
+                        <!-- password -->
+                        <div class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                            <input type="password" id="_pwd" class="mdc-text-field__input" required minlength=2>
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label for="_pwd" class="mdc-floating-label">PASSWORD</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+
+
+
+                    </ul>
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <a type="button"
+                        href="<%- `mailto:${cfg.app.admin}?subject=CompetenceX Creating Account&body=here is my email, password and department:_________` %>"
+                        class="mdc-button mdc-dialog__button mdc-button--raised">
+                        <span class="mdc-button__label">Sign Up</span>
+                    </a>
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                        <span class="mdc-button__label">Cancel</span>
+                    </button>
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept">
+                        <span class="mdc-button__label">OK</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+    </div>
+
+    <!-- login end -->
+
+
+
+
+    <!-- jsoneditor start -->
+    <div id="editor" class="mdc-dialog" role="alertdialog" aria-modal="true" data-mdc-auto-init="MDCDialog">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title mdc-typography--headline4">
+                    json editor
+                </h2>
+                <div class="mdc-dialog__content">
+
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" onclick="copyAccount();" class="mdc-button mdc-dialog__button"
+                        data-mdc-dialog-action="setting">
+                        <span class="mdc-button__label">Template</span>
+                    </button>
+                    <button type="button" onclick="reset_pwd();"
+                        class="mdc-button mdc-dialog__button mdc-button--raised" data-mdc-dialog-action="setting">
+                        <span class="mdc-button__label">Reset PWD</span>
+                    </button>
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                        <span class="mdc-button__label">Cancel</span>
+                    </button>
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept"
+                        onclick="">
+                        <span class="mdc-button__label">Submit</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+    </div>
+    <!-- jsoneditor end -->
+
+
+    <!-- radar dialog start -->
+    <div id="radar" class="mdc-dialog mdc-dialog--scrollable" role="alertdialog" aria-modal="true"
+        data-mdc-auto-init="MDCDialog">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title mdc-typography--headline4">
+                    title
+                </h2>
+                <div class="mdc-dialog__content">
+
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                        <span class="mdc-button__label">Close</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+    </div>
+    <!-- radar dialog end -->
+
+
+    <!-- msg dialog start -->
+    <div id="msg" class="mdc-dialog mdc-dialog--scrollable" role="alertdialog" aria-modal="true"
+        data-mdc-auto-init="MDCDialog">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title mdc-typography--headline4">
+                    !!!
+                </h2>
+                <div class="mdc-dialog__content">
+                    content
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                        <span class="mdc-button__label">Close</span>
+                    </button>
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="reload">
+                        <span class="mdc-button__label">Reload</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+    </div>
+    <!-- msg dialog end -->
+
+
+
+
+
+
+
+
+    <!-- progress indicator -->
+    <div id="progress" role="progressbar"
+        class="mdc-linear-progress mdc-linear-progress--indeterminate mdc-linear-progress--closed">
+        <div class="mdc-linear-progress__buffering-dots"></div>
+        <div class="mdc-linear-progress__buffer"></div>
+        <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+            <span class="mdc-linear-progress__bar-inner"></span>
+        </div>
+        <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+            <span class="mdc-linear-progress__bar-inner"></span>
+        </div>
+    </div>
+
+    <!-- snackbar -->
+    <div class="mdc-snackbar" data-mdc-auto-init="MDCSnackbar">
+        <div class="mdc-snackbar__surface">
+            <div class="mdc-snackbar__label" role="status" aria-live="polite">
+                Some messages
+            </div>
+            <div class="mdc-snackbar__actions">
+                <button type="button" class="mdc-button mdc-snackbar__action">Retry</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- custome toolPanel -->
+    <template>
+        <ul style="display: flex;flex-direction:column;align-items: flex-start;">
+
+            <button class="mdc-button"
+                onclick="gridOptions.columnApi.setRowGroupColumns(['_human']);createRangeChart({});">
+                <i class="material-icons mdc-button__icon" aria-hidden="true">bar_chart </i>
+                <span class="mdc-button__label"> RANGE CHART</span>
+            </button>
+            <button class="mdc-button" onclick="gridOptions.api.collapseAll()">
+                <i class="material-icons mdc-button__icon" aria-hidden="true">unfold_less </i>
+                <span class="mdc-button__label"> fold All</span>
+            </button>
+            <button class="mdc-button" onclick="gridOptions.api.expandAll()">
+                <i class="material-icons mdc-button__icon" aria-hidden="true">unfold_more </i>
+                <span class="mdc-button__label"> unfold All</span>
+            </button>
+            <button class="mdc-button" onclick="gridOptions.columnApi.autoSizeAllColumns();">
+                <i class="material-icons mdc-button__icon" aria-hidden="true">sync_alt </i>
+                <span class="mdc-button__label"> resize</span>
+            </button>
+            <button class="mdc-button"
+                onclick=" if (!document.fullscreenElement) {document.body.requestFullscreen().catch(err => {alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);});} else document.exitFullscreen();">
+                <i class="material-icons mdc-button__icon" aria-hidden="true">fullscreen </i>
+                <span class="mdc-button__label">full screen</span>
+            </button>
+            <button class="mdc-button" onclick="gridOptions.columnApi.resetColumnState()">
+                <i class="material-icons mdc-button__icon" aria-hidden="true">refresh</i>
+                <span class="mdc-button__label">reset</span>
+            </button>
+            <button class="mdc-button" onclick="dom.MDCDrawer.open = true;">
+                <i class="material-icons mdc-button__icon" aria-hidden="true">menu</i>
+                <span class="mdc-button__label">drawer</span>
+            </button>
+            <!-- <button class="mdc-button" onclick="gridOptions.columnApi.setRowGroupColumns([]);">
+                <i class="material-icons mdc-button__icon" aria-hidden="true">check_box_outline_blank </i>
+                <span class="mdc-button__label">Ungroup All</span>
+            </button> -->
+        </ul>
+
+    </template>
+
+
+    <script src='/get/public/mdc/material-components-web.min.js'></script>
+    <script src='<%- cfg.my["ag-grid"] %>'></script>
+    <script src="/get/public/chart.js/Chart.bundle.min.js"></script>
+    <!-- <script src='/get/public/jsoneditor/jsoneditor.min.js'></script> -->
+    <script src='<%- cfg.my["json-editor"] %>'></script>
+    <script src='<%- cfg.my["async.js"] %>'></script>
+    <script src='<%- cfg.my["main.js"] %>'></script>
+</body>
+
+</html>

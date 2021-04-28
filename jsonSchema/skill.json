@@ -1,0 +1,40 @@
+{
+    "type": "object",
+    "additionalProperties": {
+        "type": "number"
+    },
+    "required": [
+        "_id",
+        "_type"
+    ],
+    "properties": {
+        "_id": {
+            "pattern": "^[^_].*$",
+            "type": "string",
+            "maxLength": 70,
+            "minLength": 1
+        },
+        "_type": {
+            "type": "string",
+            "pattern": "^[^_].*$",
+            "maxLength": 50,
+            "minLength": 2
+        },
+        "_sub_type": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+        },
+        "_info": {
+            "type": "string",
+            "maxLength": 1000
+        },
+        "_owner": {
+            "type": [
+                "null",
+                "string"
+            ],
+            "maxLength": 50
+        }
+    }
+}
